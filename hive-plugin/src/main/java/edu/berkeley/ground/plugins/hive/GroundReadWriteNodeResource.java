@@ -83,7 +83,12 @@ public class GroundReadWriteNodeResource {
 
     // create a node using Tag
     public Node createNode(String name, Map<String, Tag> tagMap) throws GroundException {
+
         try {
+            Node node = this.getNode(name);
+            if (node != null) {
+                return node;
+            }
             String encodedUri = PluginUtil.groundServerAddress + "nodes/" + URLEncoder.encode(name, "UTF-8");
             PostMethod post = new PostMethod(encodedUri);
             ObjectMapper mapper = new ObjectMapper();

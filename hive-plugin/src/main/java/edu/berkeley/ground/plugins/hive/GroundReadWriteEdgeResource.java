@@ -26,12 +26,12 @@ import edu.berkeley.ground.plugins.hive.util.PluginUtil;
 public class GroundReadWriteEdgeResource {
 
     public Edge getEdge(String edgeName) throws GroundException {
-        GetMethod get = new GetMethod(PluginUtil.groundServerAddress + "edges/" + edgeName);
+        GetMethod get = new GetMethod(PluginUtil.buildURL("edges", edgeName));
         return getEdge(get);
     }
 
     public EdgeVersion getEdgeVersion(long edgeId) throws GroundException {
-        GetMethod get = new GetMethod(PluginUtil.groundServerAddress + "edges/versions/" + edgeId);
+        GetMethod get = new GetMethod(PluginUtil.groundServerAddress + "edges/versions" + edgeId);
         try {
             return getEdgeVersion(get);
         } catch (IOException e) {
@@ -40,9 +40,12 @@ public class GroundReadWriteEdgeResource {
     }
 
     // create edge for input Tag
-    public Edge createEdge(String name, Map<String, Tag> tagMap) throws GroundException {
+    public Edge createEdge(String name, Map<String, Tag> tagMap)
+            throws GroundException {
+
         try {
-            String encodedUri = PluginUtil.groundServerAddress + "edges/" + URLEncoder.encode(name, "UTF-8");
+            //String encodedUri = PluginUtil.groundServerAddress + "edges/" + URLEncoder.encode(name, "UTF-8");
+            String encodedUri = PluginUtil.buildURL("edges", name);
             PostMethod post = new PostMethod(encodedUri);
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonString = objectMapper.writeValueAsString(tagMap);
@@ -56,7 +59,9 @@ public class GroundReadWriteEdgeResource {
 
     // method to create the edgeVersion given the nodeId and the tags
     public EdgeVersion createEdgeVersion(long id, Map<String, Tag> tags, long structureVersionId, String reference,
-            Map<String, String> referenceParameters, long edgeId, long fromId, long toId) throws GroundException {
+            Map<String, String> referenceParameters, long edgeId, long fromId, long toId)
+                    throws GroundException {
+
         try {
             EdgeVersion edgeVersion = new EdgeVersion(id, tags, structureVersionId, reference, referenceParameters,
                     edgeId, fromId, toId);
@@ -101,4 +106,5 @@ public class GroundReadWriteEdgeResource {
         return PluginUtil.fromJson(reader, Edge.class);
     }
 
+    
 }

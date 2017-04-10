@@ -32,7 +32,7 @@ import edu.berkeley.ground.exceptions.GroundException;
 public class PluginUtil {
 
     static final private Logger logger = LoggerFactory.getLogger(PluginUtil.class);
-            
+
     private static final String GROUNDCONF = "ground.properties";
     private static final String DEFAULT_ADDRESS = "http://localhost:9090/";
     public static final HttpClient client = new HttpClient();
@@ -82,10 +82,18 @@ public class PluginUtil {
         }
     }
 
-    public static String buildURL(String path) throws URISyntaxException {
-        URIBuilder uri = new URIBuilder(groundServerAddress);
-        uri.setPath(path);
-        return uri.build().getPath();
+    public static String buildURL(String path, String name) throws GroundException {
+        try {
+            URIBuilder uri = new URIBuilder(groundServerAddress);
+            StringBuilder pathBuilder = new StringBuilder();
+            pathBuilder.append("/").append(path);
+            if (name != null) {
+                pathBuilder.append("/").append(name);
+            }
+            return uri.setPath(pathBuilder.toString()).build().toString();
+        } catch (URISyntaxException e) {
+            throw new GroundException(e);
+        }
     }
 
     public static String execute(HttpMethod method)
@@ -97,8 +105,7 @@ public class PluginUtil {
         return null;
     }
 
-    public static StringRequestEntity createRequestEntity(String jsonRecord)
-            throws UnsupportedEncodingException {
+    public static StringRequestEntity createRequestEntity(String jsonRecord) throws UnsupportedEncodingException {
         StringRequestEntity requestEntity = new StringRequestEntity(jsonRecord, "application/json", "UTF-8");
         return requestEntity;
     }
@@ -116,6 +123,10 @@ public class PluginUtil {
             return list;
         }
         return null;
+    }
+
+    public static String buildURLString(String scope, String name) {
+        return PluginUtil.groundServerAddress + scope + "/" + name;
     }
 
 }

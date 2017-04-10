@@ -140,9 +140,6 @@ public class GroundMetastoreTest {
     assertEquals(DB2, dbName);
     List<String> databases = groundStore.getAllDatabases();
     assertEquals(numDBs, databases.size());
-    for (String database : databases) {
-      System.out.println("database: " + database);
-    }
     assertTrue(databases.contains(DB2));
     assertTrue(databases.contains(DB1));
     assertEquals(true, groundStore.dropDatabase(DB1));

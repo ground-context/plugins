@@ -32,8 +32,10 @@ public class GroundReadWriteStructureResource {
 
     // create node for input Tag
     public Structure createStructure(String name) throws GroundException {
+
         try {
-            String encodedUri = PluginUtil.groundServerAddress + "structures/" + URLEncoder.encode(name, "UTF-8");
+            // String encodedUri = PluginUtil.groundServerAddress + "structures/" + URLEncoder.encode(name, "UTF-8");
+            String encodedUri = PluginUtil.buildURL("structures", name);
             PostMethod post = new PostMethod(encodedUri);
             ObjectMapper mapper = new ObjectMapper();
             Tag tag = new Tag(-1L, name, "active", GroundType.STRING);
@@ -52,11 +54,12 @@ public class GroundReadWriteStructureResource {
     // method to create StructureVersion given the nodeId and the tags
     public StructureVersion createStructureVersion(long id, long structureId, Map<String, GroundType> attributes)
             throws GroundException {
+
         StructureVersion structureVersion = new StructureVersion(id, structureId, attributes);
         try {
             ObjectMapper mapper = new ObjectMapper();
             String jsonString = mapper.writeValueAsString(structureVersion);
-            String uri = PluginUtil.groundServerAddress + "structures/versions";
+            String uri = PluginUtil.buildURL("structures/versions", null);
             PostMethod post = new PostMethod(uri);
             post.setRequestEntity(PluginUtil.createRequestEntity(jsonString));
             String response = PluginUtil.execute(post);
@@ -72,7 +75,7 @@ public class GroundReadWriteStructureResource {
     }
 
     public Structure getStructure(String name) throws GroundException {
-        GetMethod method = new GetMethod(PluginUtil.groundServerAddress + "structures/" + name);
+        GetMethod method = new GetMethod(PluginUtil.buildURL("structures", name));
         try {
             if (PluginUtil.client.executeMethod(method) == HttpURLConnection.HTTP_OK) {
                 String response = method.getResponseBodyAsString();
@@ -105,4 +108,5 @@ public class GroundReadWriteStructureResource {
         JsonReader reader = new JsonReader(new StringReader(response));
         return PluginUtil.fromJson(reader, StructureVersion.class);
     }
+
 }

@@ -104,8 +104,8 @@ public class GroundStore extends GroundStoreBase {
         try {
             Database database = groundDatabase.getDatabase(db.getName());
             if (database != null) {
-                LOG.error("Database already exists: {}", db.getName());
-                return;
+                //check status
+                LOG.info("Database already exists: {}, adding new version", db.getName());
             }
         } catch (GroundException e) {
             // ignore if the database does not exist
@@ -122,7 +122,7 @@ public class GroundStore extends GroundStoreBase {
     public Database getDatabase(String dbName) throws NoSuchObjectException {
         Database database = null;
         try {
-            database = groundDatabase.getDatabase(dbName);
+            database = this.groundDatabase.getDatabase(dbName);
             return database;
         } catch (GroundException e) {
             throw new NoSuchObjectException("Database not found: " + dbName);

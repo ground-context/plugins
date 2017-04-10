@@ -38,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -89,8 +90,10 @@ public class GroundDatabase {
         if (versions == null || versions.isEmpty()) {
             throw new GroundException("Database node not found: " + dbName);
         }
-        logger.debug("database versions size: {}", versions.size());
-        return this.groundReadWrite.getGroundReadWriteNodeResource().getNodeVersion(versions.get(0));
+        logger.info("database versions size: {}", versions.size());
+        Collections.sort(versions);
+        int size = versions.size();
+        return this.groundReadWrite.getGroundReadWriteNodeResource().getNodeVersion(versions.get(size-1));
     }
 
     protected NodeVersion createDatabaseNodeVersion(Database db, String state)
@@ -119,6 +122,7 @@ public class GroundDatabase {
                 logger.debug("created metanode: {}", dbNodeVersion.getId());
                 return dbNodeVersion;
             }
+            logger.debug("created nodeversion: {} {}", dbNodeVersion.getId(), dbName);
             // create a new edge from just created database to metadatabase node
             // useful for getting all edges
             Edge edge = groundReadWrite.getGroundReadWriteEdgeResource().createEdge(DATABASE_PARENT_NODE + dbName,
@@ -181,6 +185,7 @@ public class GroundDatabase {
     }
 
     protected NodeVersion dropDatabase(String dbName, String state) throws GroundException {
+
         NodeVersion databaseNodeVersion = getDatabaseNodeVersion(dbName);
         Map<String, Tag> dbTagMap = databaseNodeVersion.getTags();
         if (dbTagMap == null) {
@@ -197,34 +202,30 @@ public class GroundDatabase {
         NodeVersion deletedDatabaseNodeVersion = this.groundReadWrite.getGroundReadWriteNodeResource()
                 .createNodeVersion(1L, dbTagMap, sv.getId(), "", new HashMap<String, String>(), dbName);
         groundReadWrite.getGroundReadWriteEdgeResource().createEdgeVersion(edge.getId(), dbTagMap, sv.getId(), dbName,
-                new HashMap<String, String>(), edge.getId(), metaDatabaseNodeVersion.getId(),
-                databaseNodeVersion.getId());
+                new HashMap<String, String>(), edge.getId(), databaseNodeVersion.getId(),
+                deletedDatabaseNodeVersion.getId());
         return deletedDatabaseNodeVersion;
     }
 
     protected List<String> getDatabases(String pattern) throws GroundException {
+
         List<String> list = new ArrayList<>();
         List<Long> metaDatabaseClosureList = groundReadWrite.getGroundReadWriteNodeResource()
                 .getTransitiveClosure(metaDatabaseNodeVersion.getId());
+
         for (long parent : metaDatabaseClosureList) {
             NodeVersion nodeVersion = this.groundReadWrite.getGroundReadWriteNodeResource().getNodeVersion(parent);
             // for each node in closure list get all its children
             List<Long> nodeClosureList = groundReadWrite.getGroundReadWriteNodeResource()
                     .getTransitiveClosure(nodeVersion.getId());
-            if (!nodeClosureList.isEmpty()) { // this node has children -
-                                              // possibly deleted nodes
-                for (long child : nodeClosureList) {
-                    Iterator<Tag> tags = this.groundReadWrite.getGroundReadWriteNodeResource().getNodeVersion(child)
-                            .getTags().values().iterator();
-                    while (tags.hasNext()) {
-                        logger.info("getDatabases tags: {} {}", tags.next().getKey());
-                    }
-                }
-                logger.info("reference removed is: {}", nodeVersion.getReference());
+            if (!nodeClosureList.isEmpty()) { // this node has children - for now only deleted nodes
+                logger.info("node removed is: {}", nodeVersion.getReference());
                 list.remove(nodeVersion.getReference());
             } else {
-                logger.info("reference added is: {}", nodeVersion.getReference());
-                list.add(nodeVersion.getReference());
+                String nodeName = nodeVersion.getReference();
+                if (!nodeName.isEmpty()) {
+                    list.add(nodeName);
+                }
             }
         }
         return list;
