@@ -61,7 +61,7 @@ public class GroundTable {
       logger.debug("Fetching table node: {}", tableName);
       return groundReadWrite.getGroundReadWriteNodeResource().getNode(tableName);
     } catch (GroundException ge1) {
-      logger.debug("Not found - Creating table node: " + tableName);
+      logger.error("Not found - Creating table node: " + tableName);
       Node node = groundReadWrite.getGroundReadWriteNodeResource().createNode(tableName, tags);
       return node;
     }
