@@ -1,15 +1,13 @@
 /**
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package edu.berkeley.ground.plugins.hive;
@@ -20,41 +18,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hadoop.conf.Configurable;
+import org.apache.hadoop.hive.metastore.api.*; // TODO(krishna) fix
 import org.apache.hadoop.hive.metastore.FileMetadataHandler;
 import org.apache.hadoop.hive.metastore.RawStore;
-import org.apache.hadoop.hive.metastore.api.AggrStats;
-import org.apache.hadoop.hive.metastore.api.ColumnStatistics;
-import org.apache.hadoop.hive.metastore.api.CurrentNotificationEventId;
-import org.apache.hadoop.hive.metastore.api.Database;
-import org.apache.hadoop.hive.metastore.api.FileMetadataExprType;
-import org.apache.hadoop.hive.metastore.api.Function;
-import org.apache.hadoop.hive.metastore.api.HiveObjectPrivilege;
-import org.apache.hadoop.hive.metastore.api.Index;
-import org.apache.hadoop.hive.metastore.api.InvalidInputException;
-import org.apache.hadoop.hive.metastore.api.InvalidObjectException;
-import org.apache.hadoop.hive.metastore.api.InvalidPartitionException;
-import org.apache.hadoop.hive.metastore.api.MetaException;
-import org.apache.hadoop.hive.metastore.api.NoSuchObjectException;
-import org.apache.hadoop.hive.metastore.api.NotificationEvent;
-import org.apache.hadoop.hive.metastore.api.NotificationEventRequest;
-import org.apache.hadoop.hive.metastore.api.NotificationEventResponse;
-import org.apache.hadoop.hive.metastore.api.Partition;
-import org.apache.hadoop.hive.metastore.api.PartitionEventType;
-import org.apache.hadoop.hive.metastore.api.PrincipalPrivilegeSet;
-import org.apache.hadoop.hive.metastore.api.PrincipalType;
-import org.apache.hadoop.hive.metastore.api.PrivilegeBag;
-import org.apache.hadoop.hive.metastore.api.Role;
-import org.apache.hadoop.hive.metastore.api.RolePrincipalGrant;
-import org.apache.hadoop.hive.metastore.api.SQLForeignKey;
-import org.apache.hadoop.hive.metastore.api.SQLPrimaryKey;
-import org.apache.hadoop.hive.metastore.api.Table;
-import org.apache.hadoop.hive.metastore.api.TableMeta;
-import org.apache.hadoop.hive.metastore.api.Type;
-import org.apache.hadoop.hive.metastore.api.UnknownDBException;
-import org.apache.hadoop.hive.metastore.api.UnknownPartitionException;
-import org.apache.hadoop.hive.metastore.api.UnknownTableException;
 import org.apache.hadoop.hive.metastore.partition.spec.PartitionSpecProxy;
 import org.apache.thrift.TException;
+
 
 public abstract class GroundStoreBase implements RawStore, Configurable {
   @Override
@@ -96,30 +65,27 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
     return false;
   }
 
-  public boolean addPartitions(String dbName,
-                               String tblName,
-                               PartitionSpecProxy partitionSpec,
-                               boolean ifNotExists)
-      throws InvalidObjectException, MetaException {
+  public boolean addPartitions(String dbName, String tblName, PartitionSpecProxy partitionSpec,
+      boolean ifNotExists) throws InvalidObjectException, MetaException {
     // TODO Auto-generated method stub
     return false;
   }
 
   @Override
-  public Partition getPartition(String dbName, String tableName, List<String> partVals)
+  public Partition getPartition(String dbName, String tableName, List<String> part_vals)
       throws MetaException, NoSuchObjectException {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public boolean doesPartitionExist(String dbName, String tableName, List<String> partVals)
+  public boolean doesPartitionExist(String dbName, String tableName, List<String> part_vals)
       throws MetaException, NoSuchObjectException {
     // TODO Auto-generated method stub
     return false;
   }
 
-  public boolean dropPartition(String dbName, String tableName, List<String> partVals)
+  public boolean dropPartition(String dbName, String tableName, List<String> part_vals)
       throws MetaException, NoSuchObjectException, InvalidObjectException, InvalidInputException {
     // TODO Auto-generated method stub
     return false;
@@ -147,40 +113,31 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
     return null;
   }
 
-  public List<String> listTableNamesByFilter(String dbName, String filter, short maxTables)
+  public List<String> listTableNamesByFilter(String dbName, String filter, short max_tables)
       throws MetaException, UnknownDBException {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public List<String> listPartitionNames(String dbName, String tblName, short maxParts)
+  public List<String> listPartitionNames(String db_name, String tbl_name, short max_parts)
       throws MetaException {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public List<String> listPartitionNamesByFilter(String dbName,
-                                                 String tblName,
-                                                 String filter,
-                                                 short maxParts)
-      throws MetaException {
+  public List<String> listPartitionNamesByFilter(String db_name, String tbl_name, String filter,
+      short max_parts) throws MetaException {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public void alterPartition(String dbName,
-                             String tblName,
-                             List<String> partVals,
-                             Partition newPart)
-      throws InvalidObjectException, MetaException {
+  public void alterPartition(String db_name, String tbl_name, List<String> part_vals,
+      Partition new_part) throws InvalidObjectException, MetaException {
     // TODO Auto-generated method stub
   }
 
-  public void alterPartitions(String dbName,
-                              String tblName,
-                              List<List<String>> partValsList,
-                              List<Partition> newParts)
-      throws InvalidObjectException, MetaException {
+  public void alterPartitions(String db_name, String tbl_name, List<List<String>> part_vals_list,
+      List<Partition> new_parts) throws InvalidObjectException, MetaException {
     // TODO Auto-generated method stub
 
   }
@@ -202,8 +159,7 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
     return false;
   }
 
-  public List<Index> getIndexes(String dbName, String origTableName, int max)
-      throws MetaException {
+  public List<Index> getIndexes(String dbName, String origTableName, int max) throws MetaException {
     // TODO Auto-generated method stub
     return null;
   }
@@ -220,21 +176,14 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
 
   }
 
-  public List<Partition> getPartitionsByFilter(String dbName,
-                                               String tblName,
-                                               String filter,
-                                               short maxParts)
-      throws MetaException, NoSuchObjectException {
+  public List<Partition> getPartitionsByFilter(String dbName, String tblName, String filter,
+      short maxParts) throws MetaException, NoSuchObjectException {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public boolean getPartitionsByExpr(String dbName,
-                                     String tblName,
-                                     byte[] expr,
-                                     String defaultPartitionName,
-                                     short maxParts,
-                                     List<Partition> result) throws TException {
+  public boolean getPartitionsByExpr(String dbName, String tblName, byte[] expr,
+      String defaultPartitionName, short maxParts, List<Partition> result) throws TException {
     // TODO Auto-generated method stub
     return false;
   }
@@ -251,22 +200,16 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
     return null;
   }
 
-  public Table markPartitionForEvent(String dbName,
-                                     String tblName,
-                                     Map<String, String> partVals,
-                                     PartitionEventType evtType)
-      throws MetaException, UnknownTableException, InvalidPartitionException,
-      UnknownPartitionException {
+  public Table markPartitionForEvent(String dbName, String tblName, Map<String, String> partVals,
+      PartitionEventType evtType) throws MetaException, UnknownTableException,
+      InvalidPartitionException, UnknownPartitionException {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public boolean isPartitionMarkedForEvent(String dbName,
-                                           String tblName,
-                                           Map<String, String> partName,
-                                           PartitionEventType evtType)
-      throws MetaException, UnknownTableException, InvalidPartitionException,
-      UnknownPartitionException {
+  public boolean isPartitionMarkedForEvent(String dbName, String tblName,
+      Map<String, String> partName, PartitionEventType evtType) throws MetaException,
+      UnknownTableException, InvalidPartitionException, UnknownPartitionException {
     // TODO Auto-generated method stub
     return false;
   }
@@ -283,17 +226,14 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
   }
 
   public boolean grantRole(Role role, String userName, PrincipalType principalType, String grantor,
-                           PrincipalType grantorType, boolean grantOption)
+      PrincipalType grantorType, boolean grantOption)
       throws MetaException, NoSuchObjectException, InvalidObjectException {
     // TODO Auto-generated method stub
     return false;
   }
 
-  public boolean revokeRole(Role role,
-                            String userName,
-                            PrincipalType principalType,
-                            boolean grantOption)
-      throws MetaException, NoSuchObjectException {
+  public boolean revokeRole(Role role, String userName, PrincipalType principalType,
+      boolean grantOption) throws MetaException, NoSuchObjectException {
     // TODO Auto-generated method stub
     return false;
   }
@@ -304,91 +244,66 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
     return null;
   }
 
-  public PrincipalPrivilegeSet getDBPrivilegeSet(String dbName,
-                                                 String userName,
-                                                 List<String> groupNames)
+  public PrincipalPrivilegeSet getDBPrivilegeSet(String dbName, String userName,
+      List<String> groupNames) throws InvalidObjectException, MetaException {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public PrincipalPrivilegeSet getTablePrivilegeSet(String dbName, String tableName,
+      String userName, List<String> groupNames) throws InvalidObjectException, MetaException {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public PrincipalPrivilegeSet getPartitionPrivilegeSet(String dbName, String tableName,
+      String partition, String userName, List<String> groupNames)
       throws InvalidObjectException, MetaException {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public PrincipalPrivilegeSet getTablePrivilegeSet(String dbName,
-                                                    String tableName,
-                                                    String userName,
-                                                    List<String> groupNames)
-      throws InvalidObjectException, MetaException {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  public PrincipalPrivilegeSet getPartitionPrivilegeSet(String dbName,
-                                                        String tableName,
-                                                        String partition,
-                                                        String userName,
-                                                        List<String> groupNames)
-      throws InvalidObjectException, MetaException {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  public PrincipalPrivilegeSet getColumnPrivilegeSet(String dbName,
-                                                     String tableName,
-                                                     String partitionName,
-                                                     String columnName,
-                                                     String userName,
-                                                     List<String> groupNames)
+  public PrincipalPrivilegeSet getColumnPrivilegeSet(String dbName, String tableName,
+      String partitionName, String columnName, String userName, List<String> groupNames)
       throws InvalidObjectException, MetaException {
     // TODO Auto-generated method stub
     return null;
   }
 
   public List<HiveObjectPrivilege> listPrincipalGlobalGrants(String principalName,
-                                                             PrincipalType principalType) {
+      PrincipalType principalType) {
     // TODO Auto-generated method stub
     return null;
   }
 
   public List<HiveObjectPrivilege> listPrincipalDBGrants(String principalName,
-                                                         PrincipalType principalType,
-                                                         String dbName) {
+      PrincipalType principalType, String dbName) {
     // TODO Auto-generated method stub
     return null;
   }
 
   public List<HiveObjectPrivilege> listAllTableGrants(String principalName,
-                                                      PrincipalType principalType,
-                                                      String dbName,
-                                                      String tableName) {
+      PrincipalType principalType, String dbName, String tableName) {
     // TODO Auto-generated method stub
     return null;
   }
 
   public List<HiveObjectPrivilege> listPrincipalPartitionGrants(String principalName,
-                                                                PrincipalType principalType,
-                                                                String dbName,
-                                                                String tableName,
-                                                                List<String> partValues,
-                                                                String partName) {
+      PrincipalType principalType, String dbName, String tableName, List<String> partValues,
+      String partName) {
     // TODO Auto-generated method stub
     return null;
   }
 
   public List<HiveObjectPrivilege> listPrincipalTableColumnGrants(String principalName,
-                                                                  PrincipalType principalType,
-                                                                  String dbName,
-                                                                  String tableName,
-                                                                  String columnName) {
+      PrincipalType principalType, String dbName, String tableName, String columnName) {
     // TODO Auto-generated method stub
     return null;
   }
 
   public List<HiveObjectPrivilege> listPrincipalPartitionColumnGrants(String principalName,
-                                                                      PrincipalType principalType,
-                                                                      String dbName,
-                                                                      String tableName,
-                                                                      List<String> partValues,
-                                                                      String partName,
-                                                                      String columnName) {
+      PrincipalType principalType, String dbName, String tableName, List<String> partValues,
+      String partName, String columnName) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -420,7 +335,7 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
   }
 
   public List<RolePrincipalGrant> listRolesWithGrants(String principalName,
-                                                      PrincipalType principalType) {
+      PrincipalType principalType) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -430,41 +345,28 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
     return null;
   }
 
-  public Partition getPartitionWithAuth(String dbName,
-                                        String tblName,
-                                        List<String> partVals,
-                                        String userName,
-                                        List<String> groupNames)
+  public Partition getPartitionWithAuth(String dbName, String tblName, List<String> partVals,
+      String user_name, List<String> group_names)
       throws MetaException, NoSuchObjectException, InvalidObjectException {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public List<Partition> getPartitionsWithAuth(String dbName,
-                                               String tblName,
-                                               short maxParts,
-                                               String userName,
-                                               List<String> groupNames)
+  public List<Partition> getPartitionsWithAuth(String dbName, String tblName, short maxParts,
+      String userName, List<String> groupNames)
       throws MetaException, NoSuchObjectException, InvalidObjectException {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public List<String> listPartitionNamesPs(String dbName,
-                                           String tblName,
-                                           List<String> partVals,
-                                           short maxParts)
-      throws MetaException, NoSuchObjectException {
+  public List<String> listPartitionNamesPs(String db_name, String tbl_name, List<String> part_vals,
+      short max_parts) throws MetaException, NoSuchObjectException {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public List<Partition> listPartitionsPsWithAuth(String dbName,
-                                                  String tblName,
-                                                  List<String> partVals,
-                                                  short maxParts,
-                                                  String userName,
-                                                  List<String> groupNames)
+  public List<Partition> listPartitionsPsWithAuth(String db_name, String tbl_name,
+      List<String> part_vals, short max_parts, String userName, List<String> groupNames)
       throws MetaException, InvalidObjectException, NoSuchObjectException {
     // TODO Auto-generated method stub
     return null;
@@ -482,28 +384,20 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
     return false;
   }
 
-  public ColumnStatistics getTableColumnStatistics(String dbName,
-                                                   String tableName,
-                                                   List<String> colName)
-      throws MetaException, NoSuchObjectException {
+  public ColumnStatistics getTableColumnStatistics(String dbName, String tableName,
+      List<String> colName) throws MetaException, NoSuchObjectException {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public List<ColumnStatistics> getPartitionColumnStatistics(String dbName,
-                                                             String tblName,
-                                                             List<String> partNames,
-                                                             List<String> colNames)
-      throws MetaException, NoSuchObjectException {
+  public List<ColumnStatistics> getPartitionColumnStatistics(String dbName, String tblName,
+      List<String> partNames, List<String> colNames) throws MetaException, NoSuchObjectException {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public boolean deletePartitionColumnStatistics(String dbName,
-                                                 String tableName,
-                                                 String partName,
-                                                 List<String> partVals,
-                                                 String colName)
+  public boolean deletePartitionColumnStatistics(String dbName, String tableName, String partName,
+      List<String> partVals, String colName)
       throws NoSuchObjectException, MetaException, InvalidObjectException, InvalidInputException {
     // TODO Auto-generated method stub
     return false;
@@ -581,31 +475,30 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
   }
 
   public List<HiveObjectPrivilege> listPrincipalDBGrantsAll(String principalName,
-                                                            PrincipalType principalType) {
+      PrincipalType principalType) {
     // TODO Auto-generated method stub
     return null;
   }
 
   public List<HiveObjectPrivilege> listPrincipalTableGrantsAll(String principalName,
-                                                               PrincipalType principalType) {
+      PrincipalType principalType) {
     // TODO Auto-generated method stub
     return null;
   }
 
   public List<HiveObjectPrivilege> listPrincipalPartitionGrantsAll(String principalName,
-                                                                   PrincipalType principalType) {
+      PrincipalType principalType) {
     // TODO Auto-generated method stub
     return null;
   }
 
   public List<HiveObjectPrivilege> listPrincipalTableColumnGrantsAll(String principalName,
-                                                                     PrincipalType principalType) {
+      PrincipalType principalType) {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public List<HiveObjectPrivilege> listPrincipalPartitionColumnGrantsAll(
-      String principalName,
+  public List<HiveObjectPrivilege> listPrincipalPartitionColumnGrantsAll(String principalName,
       PrincipalType principalType) {
     // TODO Auto-generated method stub
     return null;
@@ -621,10 +514,8 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
     return null;
   }
 
-  public List<HiveObjectPrivilege> listPartitionColumnGrantsAll(String dbName,
-                                                                String tableName,
-                                                                String partitionName,
-                                                                String columnName) {
+  public List<HiveObjectPrivilege> listPartitionColumnGrantsAll(String dbName, String tableName,
+      String partitionName, String columnName) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -634,16 +525,14 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
     return null;
   }
 
-  public List<HiveObjectPrivilege> listPartitionGrantsAll(String dbName,
-                                                          String tableName,
-                                                          String partitionName) {
+  public List<HiveObjectPrivilege> listPartitionGrantsAll(String dbName, String tableName,
+      String partitionName) {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public List<HiveObjectPrivilege> listTableColumnGrantsAll(String dbName,
-                                                            String tableName,
-                                                            String columnName) {
+  public List<HiveObjectPrivilege> listTableColumnGrantsAll(String dbName, String tableName,
+      String columnName) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -677,11 +566,8 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
     return null;
   }
 
-  public AggrStats get_aggr_stats_for(String dbName,
-                                      String tblName,
-                                      List<String> partNames,
-                                      List<String> colNames)
-      throws MetaException, NoSuchObjectException {
+  public AggrStats get_aggr_stats_for(String dbName, String tblName, List<String> partNames,
+      List<String> colNames) throws MetaException, NoSuchObjectException {
     // TODO Auto-generated method stub
     return null;
   }
@@ -713,10 +599,8 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
     return null;
   }
 
-  public void putFileMetadata(List<Long> fileIds,
-                              List<ByteBuffer> metadata,
-                              FileMetadataExprType type)
-      throws MetaException {
+  public void putFileMetadata(List<Long> fileIds, List<ByteBuffer> metadata,
+      FileMetadataExprType type) throws MetaException {
     // TODO Auto-generated method stub
   }
 
@@ -725,12 +609,8 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
     return false;
   }
 
-  public void getFileMetadataByExpr(List<Long> fileIds,
-                                    FileMetadataExprType type,
-                                    byte[] expr,
-                                    ByteBuffer[] metadata,
-                                    ByteBuffer[] exprResults,
-                                    boolean[] eliminated) throws MetaException {
+  public void getFileMetadataByExpr(List<Long> fileIds, FileMetadataExprType type, byte[] expr,
+      ByteBuffer[] metadatas, ByteBuffer[] exprResults, boolean[] eliminated) throws MetaException {
     // TODO Auto-generated method stub
   }
 
@@ -754,29 +634,25 @@ public abstract class GroundStoreBase implements RawStore, Configurable {
     return 0;
   }
 
-  public List<SQLPrimaryKey> getPrimaryKeys(String dbName, String tblName) throws MetaException {
+  public List<SQLPrimaryKey> getPrimaryKeys(String db_name, String tbl_name) throws MetaException {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public List<SQLForeignKey> getForeignKeys(String parentDbName,
-                                            String parentTblName,
-                                            String foreignDbName,
-                                            String foreignTblName) throws MetaException {
+  public List<SQLForeignKey> getForeignKeys(String parent_db_name, String parent_tbl_name,
+      String foreign_db_name, String foreign_tbl_name) throws MetaException {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public void createTableWithConstraints(Table tbl,
-                                         List<SQLPrimaryKey> primaryKeys,
-                                         List<SQLForeignKey> foreignKeys)
-      throws InvalidObjectException, MetaException {
+  public void createTableWithConstraints(Table tbl, List<SQLPrimaryKey> primaryKeys,
+      List<SQLForeignKey> foreignKeys) throws InvalidObjectException, MetaException {
     // TODO (FIX)
     createTable(tbl);
   }
 
-  public void dropConstraint(String dbName, String tableName,
-                             String constraintName) throws NoSuchObjectException {
+  public void dropConstraint(String dbName, String tableName, String constraintName)
+      throws NoSuchObjectException {
     // TODO Auto-generated method stub
 
   }
